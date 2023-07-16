@@ -9,6 +9,31 @@ const Game = (props: Props) => {
     const navigate = useNavigate();
     const { value, dispatch } = useRootContext()
     const [number, setNumber] = useState<number>(0)
+    const [won, setWon] = useState<boolean>(false)
+    useEffect(() => {
+        if (won) {
+
+            setTimeout(() => {
+                navigate("/")
+                dispatch({
+                    payload: {
+                        type: ERootActions.updatePlayer,
+                        data: {
+                            ...value.player, isPlayer: false
+                        }
+                    }
+                })
+                dispatch({
+                    payload: {
+                        type: ERootActions.updateBanner,
+                        data: banners[EBanner.welcome]
+                    }
+                })
+            }, 3000)
+        }
+
+    }, [won, dispatch, navigate])
+
     useEffect(() => {
         console.log(value.gameNumber);
 
@@ -37,6 +62,7 @@ const Game = (props: Props) => {
                     data: banners[EBanner.success]
                 }
             })
+            setWon(true)
 
         }
     }
@@ -45,11 +71,22 @@ const Game = (props: Props) => {
             <div className='w-[70%] h-[50%] rounded-3xl flex flex-col gap-3 items-center p-3'>
                 <h1 className="text-5xl text-blue-500">Guess The Number</h1>
                 <div id="input" className="w-[90%] m-x-auto flex flex-col gap-4 mt-6">
-                    <input type="number" className="text-2xl border-2 w-full outline-none bg-white px-2 text-gray-500" placeholder="eg.100" onChange={(e) => setNumber(Number(e.target.value))} />
+                    <input
+                        type="number"
+                        className="text-2xl border-2 w-full outline-none bg-white px-2 text-gray-500"
+                        placeholder="eg.100"
+                        onChange={(e) => setNumber(Number(e.target.value))}
+                        onKeyDown={(e) => {
+                            if (e.key == "Enter") {
+                                check()
+                            }
+                        }}
+                    />
                 </div>
                 <button
-                    className="bg-blue-600 px-4 mt-6 py-2 text-white hover:rounded-lg transition-all duration-400 trasition-[border] text-xl w-[90%] m-auto hover:bg-red-400"
+                    className="bg-blue-600 px-4 disabled:bg-gray-400 mt-6 py-2 text-white hover:rounded-lg transition-all duration-400 trasition-[border] text-xl w-[90%] m-auto hover:bg-red-400"
                     onClick={check}
+                    disabled={won}
                 >
                     Check
                 </button>
