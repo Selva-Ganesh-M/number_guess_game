@@ -11,7 +11,6 @@ const Welcome = (props: Props) => {
     const [name, setName] = useState<string>("")
     const startGame = () => {
         dispatch({
-            type: ERootActions.updatePlayer,
             payload: {
                 type: ERootActions.updatePlayer,
                 data: {
@@ -19,7 +18,13 @@ const Welcome = (props: Props) => {
                 }
             }
         })
-        console.log(`start game ended`);
+
+        dispatch({
+            payload: {
+                data: Math.floor(Math.random() * 1000),
+                type: ERootActions.updateGameNumber
+            }
+        })
 
     }
 

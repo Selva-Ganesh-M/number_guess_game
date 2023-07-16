@@ -8,7 +8,7 @@ const Banner = (props: Props) => {
     return (
         <div className='h-[100vh] w-full bg-red-300'>
             <div className='h-full w-full'>
-                <img src={value.banner} alt="" className='object-cover h-full' />
+                <img src={value.banner} alt="" className='object-cover h-full w-full' />
             </div>
         </div>
     )
